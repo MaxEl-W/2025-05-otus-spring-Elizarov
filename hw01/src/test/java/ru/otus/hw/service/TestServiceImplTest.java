@@ -13,7 +13,7 @@ import ru.otus.hw.domain.Question;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -24,6 +24,8 @@ public class TestServiceImplTest {
     private IOService ioService;
     @Mock
     private QuestionDao questionDao;
+    @Mock
+    private QuestionConverter converter;
     @InjectMocks
     private TestServiceImpl testService;
 
@@ -39,16 +41,12 @@ public class TestServiceImplTest {
     }
 
     @Test
-    public void shouldValidFormat() {
-        var expectedQuestionFormatedText = "Question\n\tAnswer1\n\tAnswer2\n";
+    public void shouldConvertAllQuestions() {
         var question = new Question("Question", List.of(new Answer("Answer1", false), new Answer("Answer2", false)));
-        given(questionDao.findAll()).willReturn(List.of(question));
-        var captor = ArgumentCaptor.forClass(String.class);
+        given(questionDao.findAll()).willReturn(List.of(question, question, question));
 
         testService.executeTest();
 
-        verify(ioService, times(2)).printLine(captor.capture());
-        var actualQuestionFormatedText = captor.getAllValues().get(1);
-        assertThat(actualQuestionFormatedText).isEqualTo(expectedQuestionFormatedText);
+        verify(converter, times(3)).toString(any(Question.class));
     }
 }
