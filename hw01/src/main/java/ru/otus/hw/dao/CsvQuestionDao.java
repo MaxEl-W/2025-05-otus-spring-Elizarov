@@ -20,27 +20,22 @@ public class CsvQuestionDao implements QuestionDao {
 
     @Override
     public List<Question> findAll() {
-        InputStream questionInputStream = getQuestions();
-
-        CsvToBeanBuilder<QuestionDto> csvToBeanBuilder =
-                new CsvToBeanBuilder<>(new InputStreamReader(questionInputStream));
-        List<QuestionDto> questions =
-                csvToBeanBuilder.withType(QuestionDto.class).withSeparator(';').withSkipLines(BEGIN_COMMENT_LINE_COUNT)
-                        .build().parse();
+        CsvToBeanBuilder<QuestionDto> csvToBeanBuilder;
+        List<QuestionDto> questions;
+        try (InputStream inputStream = getFileFromResourceAsStream();
+             InputStreamReader questionReader = new InputStreamReader(inputStream);) {
+            csvToBeanBuilder = new CsvToBeanBuilder<>(questionReader);
+            questions = csvToBeanBuilder.withType(QuestionDto.class).withSeparator(';')
+                    .withSkipLines(BEGIN_COMMENT_LINE_COUNT).build().parse();
+        } catch (Exception e) {
+            throw new QuestionReadException(e.getMessage(), e);
+        }
 
         return questions.stream().map(QuestionDto::toDomainObject).toList();
     }
 
-    private InputStream getQuestions() {
-        String questionsFileName = fileNameProvider.getTestFileName();
-        try {
-            return getFileFromResourceAsStream(questionsFileName);
-        } catch (Exception e) {
-            throw new QuestionReadException(e.getMessage(), e);
-        }
-    }
-
-    private InputStream getFileFromResourceAsStream(String fileName) {
+    private InputStream getFileFromResourceAsStream() {
+        String fileName = fileNameProvider.getTestFileName();
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(fileName);
         return Optional.ofNullable(inputStream)
