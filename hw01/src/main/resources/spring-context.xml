@@ -24,8 +24,11 @@
         <constructor-arg name="testService" ref="testService" />
     </bean>
 
+    <bean id="questionConverter" class="ru.otus.hw.service.ScreenQuestionConverter" />
+
     <bean id="testService" class="ru.otus.hw.service.TestServiceImpl">
         <constructor-arg name="ioService" ref="ioService" />
         <constructor-arg name="questionDao" ref="questionDao" />
+        <constructor-arg name="converter" ref="questionConverter" />
     </bean>
 </beans>
