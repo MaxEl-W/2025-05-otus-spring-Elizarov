@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
+@Component
 public class ScreenQuestionConverter implements QuestionConverter {
     private static final String NUMBER_SEPARATOR = ". ";
 
