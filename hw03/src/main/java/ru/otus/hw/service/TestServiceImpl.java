@@ -14,6 +14,10 @@ public class TestServiceImpl implements TestService {
 
     private final QuestionDao questionDao;
 
+    private final QuestionConverter converter;
+
+    private final AnswerReader answerReader;
+
     @Override
     public TestResult executeTestFor(Student student) {
         ioService.printLine("");
@@ -24,7 +28,11 @@ public class TestServiceImpl implements TestService {
         var testResult = new TestResult(student);
 
         for (var question: questions) {
-            var isAnswerValid = false; // Задать вопрос, получить ответ
+            String questionText = converter.toString(question);
+            ioService.printLine(questionText);
+
+            var isAnswerValid = answerReader.readUserChoice(question).isCorrect();
+
             testResult.applyAnswer(question, isAnswerValid);
         }
         return testResult;
