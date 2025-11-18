@@ -18,7 +18,7 @@ import ru.otus.hw.models.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,13 +38,12 @@ public class JdbcBookRepository implements BookRepository {
         //@formatter:off
         Book result = namedParameterJdbcOperations.query(
                         "SELECT b.id AS b_id, b.title AS b_title, b.author_id AS a_id, a.full_name AS a_full_name,\n" +
-                        "       GROUP_CONCAT(g.id || ':' || g.name SEPARATOR ';') AS genres\n" +
-                        "FROM books AS b\n" +
-                        "     JOIN authors AS a ON b.author_id = a.id\n" +
-                        "     JOIN books_genres bg ON b.id = bg.book_id\n" +
-                        "     JOIN genres g ON bg.genre_id = g.id\n" +
-                        "WHERE b.id = :bookId\n" +
-                        "GROUP BY b_id, b_title, a_id, a_full_name", Map.of("bookId", id),
+                        "       g.id AS g_id, g.name AS g_name" +
+                        " FROM books AS b\n" +
+                        "INNER JOIN authors AS a ON b.author_id = a.id\n" +
+                        "INNER JOIN books_genres bg ON b.id = bg.book_id\n" +
+                        "INNER JOIN genres g ON bg.genre_id = g.id\n" +
+                        "WHERE b.id = :bookId", Map.of("bookId", id),
                 new BookResultSetExtractor());
         //@formatter:on
 
@@ -175,6 +174,7 @@ public class JdbcBookRepository implements BookRepository {
                 String title = rs.getString("b_title");
                 var author = extractAuthor(rs);
                 var genres = extractGenres(rs);
+
                 return new Book(id, title, author, genres);
             }
             return null;
@@ -187,17 +187,17 @@ public class JdbcBookRepository implements BookRepository {
         }
 
         private List<Genre> extractGenres(ResultSet rs) throws SQLException {
-            String genres = rs.getString("genres");
-            if (genres.contains(";")) {
-                return Arrays.stream(genres.split(";")).map(this::parseGenre).toList();
-            }
-            return List.of(parseGenre(genres));
+            List<Genre> genres = new ArrayList<>();
+            do {
+                var genre = extractGenre(rs);
+                genres.add(genre);
+            } while (rs.next());
+            return genres;
         }
 
-        private Genre parseGenre(String s) {
-            String[] genreAttributes = s.split(":");
-            var id = Long.parseLong(genreAttributes[0]);
-            var name = genreAttributes[1];
+        private Genre extractGenre(ResultSet rs) throws SQLException {
+            long id = rs.getLong("g_id");
+            String name = rs.getString("g_name");
             return new Genre(id, name);
         }
     }
