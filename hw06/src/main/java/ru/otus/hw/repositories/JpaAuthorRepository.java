@@ -2,6 +2,7 @@ package ru.otus.hw.repositories;
 
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.models.Author;
 
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "repository-type", havingValue = "jpa")
 public class JpaAuthorRepository implements AuthorRepository {
     private final EntityManager em;
 

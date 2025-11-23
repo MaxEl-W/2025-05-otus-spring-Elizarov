@@ -1,6 +1,7 @@
 package ru.otus.hw.repositories;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "repository-type", havingValue = "jdbc")
 public class JdbcBookRepository implements BookRepository {
     private static final String NO_ENTRIES_UPDATED_MESSAGE = "Ни одной записи не обновлено";
 

@@ -1,6 +1,7 @@
 package ru.otus.hw.repositories;
 
 import lombok.AllArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Repository
 @AllArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "repository-type", havingValue = "jdbc")
 public class JdbcGenreRepository implements GenreRepository {
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
