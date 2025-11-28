@@ -37,17 +37,14 @@ public class JdbcBookRepository implements BookRepository {
 
     @Override
     public Optional<Book> findById(long id) {
-        //@formatter:off
-        Book result = namedParameterJdbcOperations.query(
-                        "SELECT b.id AS b_id, b.title AS b_title, b.author_id AS a_id, a.full_name AS a_full_name,\n" +
-                        "       g.id AS g_id, g.name AS g_name" +
-                        " FROM books AS b\n" +
-                        "INNER JOIN authors AS a ON b.author_id = a.id\n" +
-                        "INNER JOIN books_genres bg ON b.id = bg.book_id\n" +
-                        "INNER JOIN genres g ON bg.genre_id = g.id\n" +
-                        "WHERE b.id = :bookId", Map.of("bookId", id),
-                new BookResultSetExtractor());
-        //@formatter:on
+        Book result = namedParameterJdbcOperations.query("""
+                SELECT b.id AS b_id, b.title AS b_title, b.author_id AS a_id, a.full_name AS a_full_name,\
+                       g.id AS g_id, g.name AS g_name
+                  FROM books AS b
+                 INNER JOIN authors AS a ON b.author_id = a.id
+                 INNER JOIN books_genres bg ON b.id = bg.book_id
+                 INNER JOIN genres g ON bg.genre_id = g.id
+                 WHERE b.id = :bookId""", Map.of("bookId", id), new BookResultSetExtractor());
 
         return Optional.ofNullable(result);
     }

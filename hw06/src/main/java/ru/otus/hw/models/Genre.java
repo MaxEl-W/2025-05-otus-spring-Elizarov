@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Genre {
     @Id
-    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 

@@ -31,7 +31,7 @@ import java.util.Objects;
 @NamedEntityGraph(name = "author-entity-graph", attributeNodes = {@NamedAttributeNode("author")})
 public class Book {
     @Id
-    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
