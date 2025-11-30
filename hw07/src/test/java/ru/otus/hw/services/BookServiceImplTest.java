@@ -11,18 +11,13 @@ import ru.otus.hw.converters.AuthorConverter;
 import ru.otus.hw.converters.BookConverter;
 import ru.otus.hw.converters.CommentConverter;
 import ru.otus.hw.converters.GenreConverter;
-import ru.otus.hw.repositories.JpaAuthorRepository;
-import ru.otus.hw.repositories.JpaBookRepository;
-import ru.otus.hw.repositories.JpaCommentRepository;
-import ru.otus.hw.repositories.JpaGenreRepository;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @DisplayName("Сервис для работы с книгами")
 @DataJpaTest
 @Import({BookServiceImpl.class, BookConverter.class, AuthorConverter.class, GenreConverter.class,
-        CommentConverter.class, JpaBookRepository.class, JpaAuthorRepository.class, JpaGenreRepository.class,
-        JpaCommentRepository.class})
+        CommentConverter.class})
 @Transactional(propagation = Propagation.NEVER)
 public class BookServiceImplTest {
     @Autowired

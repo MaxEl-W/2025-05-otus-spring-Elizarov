@@ -7,7 +7,7 @@ import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Comment;
 import ru.otus.hw.repositories.BookRepository;
-import ru.otus.hw.repositories.CommentRepository;
+import ru.otus.hw.repositories.JpaCommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +18,7 @@ public class CommentServiceImpl implements CommentService {
 
     private BookRepository bookRepository;
 
-    private CommentRepository commentRepository;
+    private JpaCommentRepository commentRepository;
 
     @Override
     @Transactional(readOnly = true)
