@@ -9,16 +9,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.converters.CommentConverter;
-import ru.otus.hw.models.Book;
-import ru.otus.hw.repositories.JpaBookRepository;
-import ru.otus.hw.repositories.JpaCommentRepository;
-import ru.otus.hw.repositories.JpaGenreRepository;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @DisplayName("Сервис для работы с комментариями")
 @DataJpaTest
-@Import({CommentServiceImpl.class, CommentConverter.class, JpaCommentRepository.class, JpaBookRepository.class})
+@Import({CommentServiceImpl.class, CommentConverter.class})
 @Transactional(propagation = Propagation.NEVER)
 public class CommentServiceImplTest {
     @Autowired
