@@ -7,6 +7,10 @@ import ru.otus.hw.models.Book;
 import java.util.List;
 
 public interface JpaBookRepository  extends JpaRepository<Book, Long>,  BookRepository {
+
+    @Override
+    Book save(Book book);
+
     @Override
     @EntityGraph(attributePaths = {"author"})
     List<Book> findAll();
