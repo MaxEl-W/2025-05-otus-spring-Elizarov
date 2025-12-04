@@ -28,13 +28,7 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Book> findById(long id) {
-        return bookRepository.findById(id).map(this::initializeAllLazyFields);
-    }
-
-    private Book initializeAllLazyFields(Book book) {
-        book.getAuthor().getFullName();
-        initializeLazyCollections(book);
-        return book;
+        return bookRepository.findById(id).map(this::initializeLazyCollections);
     }
 
     @Override
@@ -47,9 +41,10 @@ public class BookServiceImpl implements BookService {
         return books;
     }
 
-    private void initializeLazyCollections(Book book) {
+    private Book initializeLazyCollections(Book book) {
         book.getComments().size();
         book.getGenres().size();
+        return book;
     }
 
     @Override
