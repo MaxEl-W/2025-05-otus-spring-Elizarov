@@ -43,7 +43,7 @@ class JpaCommentRepositoryTest {
         var book = em.find(Book.class, 1);
         var expectedComments = IntStream.range(1, 3).boxed().map(bId -> em.find(Comment.class, bId)).toList();
 
-        var actualComments = repository.findByBook(book.getId());
+        var actualComments = repository.findByBookId(book.getId());
 
         assertThat(actualComments).containsExactlyElementsOf(expectedComments);
     }

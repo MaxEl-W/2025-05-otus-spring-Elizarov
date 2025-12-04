@@ -24,14 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity // Указывает, что данный класс является сущностью
+@Entity
 @Table(name = "books")
 @Getter
 @Setter
 @NamedEntityGraph(name = "author-entity-graph", attributeNodes = {@NamedAttributeNode("author")})
 public class Book {
     @Id
-    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 

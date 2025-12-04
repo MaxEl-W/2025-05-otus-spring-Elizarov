@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(readOnly = true)
     public List<Comment> findByBook(long bookId) {
-        return commentRepository.findByBook(bookId);
+        return commentRepository.findByBookId(bookId);
     }
 
     @Override

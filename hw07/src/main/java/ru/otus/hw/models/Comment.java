@@ -24,7 +24,7 @@ import java.util.Objects;
 public class Comment {
     @Getter
     @Id
-    @Column(name = "id", nullable = false, updatable = false, unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
