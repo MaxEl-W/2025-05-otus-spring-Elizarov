@@ -28,7 +28,7 @@ class JpaGenreRepositoryTest {
         var ids = LongStream.range(2, 5).boxed().collect(Collectors.toSet());
         var expectedGenres = ids.stream().map(id -> em.find(Genre.class, id)).toList();
 
-        var actualGenres = repositoryJpa.findAllByIds(ids);
+        var actualGenres = repositoryJpa.findByIdIn(ids);
 
         assertThat(actualGenres).containsExactlyElementsOf(expectedGenres);
     }
